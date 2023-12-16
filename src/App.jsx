@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import './App.css'
+import CharacterSelectPanel from './components/CharacterSelectPanel';
 
 function App() {
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center text-emerald-800">
-        Hello World!
-      </h1>
+      <CharacterSelectPanel />
     </div>
   )
 }
