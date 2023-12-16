@@ -9,7 +9,12 @@ export default {
     './src/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'four-star-purple': '#7A4E92',
+        'five-star-gold': '#BA9F36'
+      }
+    },
   },
   plugins: [],
 }

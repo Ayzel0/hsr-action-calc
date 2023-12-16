@@ -1,0 +1,30 @@
+[
+    {
+        "Element": "Physical",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/attribute/IconAttributePhysical.png?vh=2023100901"
+    },
+    {
+        "Element": "Fire",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/attribute/IconAttributeFire.png?vh=2023100901"
+    },
+    {
+        "Element": "Ice",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/attribute/IconAttributeIce.png?vh=2023100901"
+    },
+    {
+        "Element": "Lightning",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/attribute/IconAttributeThunder.png?vh=2023100901"
+    },
+    {
+        "Element": "Wind",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/attribute/IconAttributeWind.png?vh=2023100901"
+    },
+    {
+        "Element": "Quantum",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/attribute/IconAttributeQuantum.png?vh=2023100901"
+    },
+    {
+        "Element": "Imaginary",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/attribute/IconAttributeImaginary.png?vh=2023100901"
+    }
+]
