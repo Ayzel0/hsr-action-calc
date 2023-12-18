@@ -1,0 +1,30 @@
+[
+    {
+        "Path": "Destruction",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/profession/IconProfessionWarriorSmall.png?vh=2023100901"
+    },
+    {
+        "Path": "The Hunt",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/profession/IconProfessionRogueSmall.png?vh=2023100901"
+    },
+    {
+        "Path": "Erudition",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/profession/IconProfessionMageSmall.png?vh=2023100901"
+    },
+    {
+        "Path": "Harmony",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/profession/IconProfessionShamanSmall.png?vh=2023100901"
+    },
+    {
+        "Path": "Nihility",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/profession/IconProfessionWarlockSmall.png?vh=2023100901"
+    },
+    {
+        "Path": "Preservation",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/profession/IconProfessionKnightSmall.png?vh=2023100901"
+    },
+    {
+        "Path": "Abundance",
+        "Image Link": "https://api.yatta.top/hsr/assets/UI/profession/IconProfessionPriestSmall.png?vh=2023100901"
+    }
+]

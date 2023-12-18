@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import './App.css'
-import CharacterSelectPanel from './components/CharacterSelectPanel';
+import ActionCalc from './components/ActionCalc';
 
 function App() {
   return (
     <div>
-      <CharacterSelectPanel />
+      <ActionCalc />
     </div>
   )
 }
