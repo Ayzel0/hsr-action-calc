@@ -54,12 +54,10 @@ const CharacterSelectPanel = ({ onPortraitClick, characters }) => {
       <div className='flex flex-wrap gap-3 justify-center'> {/* character panel div */}
       {characters.map((character) => (
         (activePaths.includes(character['Path']) && activeElements.includes(character['Element'])) &&
-        <div key={character['Character Name']}>
+        <div key={character['Character Name']} id={character['Character Name']}>
           <CharacterPortrait 
-            charName={character['Character Name']} 
-            imgLink={character['Image Link']} 
-            rarity={character['Rarity']} 
-            onClick={() => onPortraitClick(character['Character Name'])}
+            character={character}
+            onPortraitClick={onPortraitClick}
           />
         </div>
       ))}

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import CharacterSelectPanel from "./CharacterSelectPanel";
+import SelectedCharacters from './SelectedCharacterDisplay';
+import ActionStack from './ActionStack';
 import characters from '../data/characters.json';
 
 const ActionCalc = () => {
@@ -17,18 +19,23 @@ const ActionCalc = () => {
       setCharacterList(characterList.filter(character => character['Character Name'] !== charName));
     }
   }
-
-  // debug
-  useEffect(() => {
-    console.log(characterList);
-  }, [characterList]);
   
   return (
     <div>
+      <div className='grid grid-cols-2 bg-blue-950'>
+        <SelectedCharacters 
+          characterList={characterList} 
+          setCharacterList={setCharacterList}
+          onPortraitClick={onPortraitClick}
+        />
+        <ActionStack />
+      </div>
+      {characters &&
       <CharacterSelectPanel 
         onPortraitClick={onPortraitClick}
         characters={characters}
       />
+      }
     </div>
   )
 }
