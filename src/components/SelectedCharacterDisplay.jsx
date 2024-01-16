@@ -1,6 +1,22 @@
 import CharacterPortrait from "./CharacterPortrait";
+import characters from '../data/characters.json';
 
 const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick }) => {
+  const resetBaseSpeeds = () => {
+    let charNames = characterList.map(char => {
+      return char['Character Name'];
+    });
+
+    /*
+    const newCharacterList = characterList.map(char => {
+      if (charNames.includes(char['Character Name'])) {
+        return characters.find(character => charNames.includes(character['Character Name']));
+      }
+    });
+    setCharacterList(characters);
+    */
+  }
+
   return (
     <div className='bg-inherit'>
       <h1 className='text-4xl font-semibold text-white px-5 pt-5'>Selected Characters</h1>
@@ -12,6 +28,7 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick }
               <CharacterPortrait
                 character={character}
                 selected={true}
+                characterList={characterList}
                 setCharacterList={setCharacterList}
                 onPortraitClick={onPortraitClick}
               />
@@ -23,8 +40,11 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick }
         </div>
       </div>
       }
+      <div className='ml-5 mb-5 text-white'>
+        <button className='p-5 bg-slate-700 rounded-2xl' onClick={resetBaseSpeeds}>Reset Base Speeds</button>
+      </div>
     </div>
   )
 }
 
-export default SelectedCharacters;
+export default SelectedCharacters;['Character']

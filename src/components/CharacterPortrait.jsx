@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import HoverMenu from './HoverMenu';
 
-const CharacterPortrait = ({ character, onPortraitClick, selected=false }) => {
+const CharacterPortrait = ({ character, onPortraitClick, characterList, setCharacterList, selected=false }) => {
   let name = character['Character Name'];
   let imgLink = character['Image Link'];
   let rarity = character['Rarity'];
@@ -36,7 +36,11 @@ const CharacterPortrait = ({ character, onPortraitClick, selected=false }) => {
       </div>
       {(isHovered && selected) &&
       <div>
-        <HoverMenu />
+        <HoverMenu 
+          character={character}
+          characterList={characterList}
+          setCharacterList={setCharacterList}
+        />
       </div>
       }
     </div>
