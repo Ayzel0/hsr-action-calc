@@ -28,39 +28,41 @@ const CharacterSelectPanel = ({ onPortraitClick, characters }) => {
   }
 
   return (
-    <div className='bg-slate-300 flex flex-col justify-center items-center p-5'>
-      <div className='flex flex-row'> {/* element filter */}
-      {elements.map((element) => (
-        <div className='mx-1 mb-2' key={element['Element']}>
-          <FilterButton 
-            imageLink={element['Image Link']} 
-            onClick={() => changeActiveElements(element['Element'])}
-            iconType='element'
-          />
+    <div>
+      <div className='bg-slate-300 flex flex-col justify-center items-center p-5'>
+        <div className='flex flex-row'> {/* element filter */}
+        {elements.map((element) => (
+          <div className='mx-1 mb-2' key={element['Element']}>
+            <FilterButton 
+              imageLink={element['Image Link']} 
+              onClick={() => changeActiveElements(element['Element'])}
+              iconType='element'
+            />
+          </div>
+        ))}
         </div>
-      ))}
-      </div>
-      <div className='flex flex-row'> {/* path filter */}
-      {paths.map((path) => (
-        <div className='mx-1 mb-2' key={path['Path']}>
-          <FilterButton 
-            imageLink={path['Image Link']}
-            onClick={() => changeActivePaths(path['Path'])}
-            iconType='path'
-          />
+        <div className='flex flex-row'> {/* path filter */}
+        {paths.map((path) => (
+          <div className='mx-1 mb-2' key={path['Path']}>
+            <FilterButton 
+              imageLink={path['Image Link']}
+              onClick={() => changeActivePaths(path['Path'])}
+              iconType='path'
+            />
+          </div>
+        ))}
         </div>
-      ))}
-      </div>
-      <div className='flex flex-wrap gap-3 justify-center'> {/* character panel div */}
-      {characters.map((character) => (
-        (activePaths.includes(character['Path']) && activeElements.includes(character['Element'])) &&
-        <div key={character['Character Name']} id={character['Character Name']}>
-          <CharacterPortrait 
-            character={character}
-            onPortraitClick={onPortraitClick}
-          />
+        <div className='flex flex-wrap gap-3 justify-center'> {/* character panel div */}
+        {characters.map((character) => (
+          (activePaths.includes(character['Path']) && activeElements.includes(character['Element'])) &&
+          <div key={character['Character Name']} id={character['Character Name']}>
+            <CharacterPortrait 
+              character={character}
+              onPortraitClick={onPortraitClick}
+            />
+          </div>
+        ))}
         </div>
-      ))}
       </div>
     </div>
   )

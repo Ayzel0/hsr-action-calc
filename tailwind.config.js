@@ -15,7 +15,7 @@ export default {
         'five-star-gold-dark': '#CBA368',
         'four-star-purple-light': '#373658',
         'four-star-purple-dark': '#7650B1'
-      }
+      },
     },
   },
   plugins: [],

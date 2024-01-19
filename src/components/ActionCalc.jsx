@@ -8,7 +8,6 @@ const ActionCalc = () => {
   const [characterList, setCharacterList] = useState([]);
 
   const onPortraitClick = (charName) => {
-    // check whether character is in list
     const charListNames = characterList.map(character => character['Character Name']);
 
     if (characterList.length < 4 && !charListNames.includes(charName)) {
@@ -30,12 +29,6 @@ const ActionCalc = () => {
         />
         <ActionStack />
       </div>
-      {characters &&
-      <CharacterSelectPanel 
-        onPortraitClick={onPortraitClick}
-        characters={characters}
-      />
-      }
     </div>
   )
 }
