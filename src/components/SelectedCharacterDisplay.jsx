@@ -3,7 +3,7 @@ import CharacterSelectPanel from "./CharacterSelectPanel";
 import characters from '../data/characters.json';
 import { useState, useEffect } from 'react';
 
-const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick }) => {
+const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick, changeCharSelectDisplay }) => {
   const [showSelect, setShowSelect] = useState(false);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick }
       <h1 className='text-4xl font-semibold text-white px-5 pt-5'>Selected Characters</h1>
       {characterList.length > 0 ?
       <div>
-        <div className='inline-block bg-slate-800 rounded-2xl ml-5 my-5'>
+        <div className='inline-block bg-zinc-800 rounded-2xl ml-5 my-5'>
           <div className='flex flex-row gap-4 p-5 items-center'> {/* selected characters panel */}
             {characterList && characterList.map((character) => (
               <div key={character['Character Name']}>
@@ -71,7 +71,7 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick }
           </div>
         </div>
         {showSelect && 
-        <div>
+        <div className='absolute w-[80%] px-5 rounded-2xl'>
           <CharacterSelectPanel 
             onPortraitClick={onPortraitClick}
             characters={characters}
@@ -83,22 +83,28 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick }
       <div className='bg-inherit'> {/* shows when character list length is 0*/}
         <div className='bg-slate-800 inline-block rounded-2xl my-5 ml-5'>
           <div 
-            className='bg-slate-600 h-64 w-32 p-5 m-5 rounded-2xl flex flex-col justify-center items-center cursor-pointer'
+            className='bg-slate-600 h-[270px] w-32 p-5 m-5 rounded-2xl flex flex-col justify-center items-center cursor-pointer'
             onClick={handleShowSelect}
           >
             <h1 className='text-3xl text-white'>+</h1>
           </div>
         </div>
-        {showSelect && <CharacterSelectPanel 
-          onPortraitClick={onPortraitClick}
-          characters={characters}
-        />}
+        <div className='absolute w-[80%] px-5 rounded-2xl'>
+          {showSelect && 
+          <CharacterSelectPanel 
+            onPortraitClick={onPortraitClick}
+            characters={characters}
+          />}
+        </div>
       </div>
       }
-      {characterList.length > 0 &&
       <div className='ml-5 mb-5 text-white'>
         <button className='p-5 bg-slate-700 rounded-2xl' onClick={resetBaseSpeeds}>Reset Base Speeds</button>
         <button className='p-5 bg-slate-700 rounded-2xl ml-5' onClick={resetSelectedCharacters}>Reset Selected Characters</button>
+      </div>
+      {
+      <div className='flex flex-col items-center mt-5'>
+        <button className='bg-emerald-600 p-5 rounded-full w-[60%] text-lg font-medium'>Start Simulation</button>
       </div>
       }
     </div>

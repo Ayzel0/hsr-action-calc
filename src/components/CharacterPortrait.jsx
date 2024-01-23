@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react';
 import HoverMenu from './HoverMenu';
 
-const CharacterPortrait = ({ character, onPortraitClick, characterList, setCharacterList, selected=false }) => {
+const CharacterPortrait = ({ character, onPortraitClick, characterList, setCharacterList, selected=false, minimized=false }) => {
   let name = character['Character Name'];
   let imgLink = character['Image Link'];
   let rarity = character['Rarity'];
+
+  // fix long names
+  if (name.includes('Imbibitor Lunae')) {
+    name = 'Dan Heng IL';
+  } else if (name.includes('Trailblazer')) {
+    name = 'Trailblazer';
+  }
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -29,9 +36,9 @@ const CharacterPortrait = ({ character, onPortraitClick, characterList, setChara
         onClick={() => onPortraitClick(name)} 
         className={bg_classes}
       >
-        <img src={imgLink} className='w-32 relative'/>
-        <div className='w-32 bg-amber-50'>
-          <p className='text-m font-medium text-center py-3'>{name}</p>
+        <img src={imgLink} className={`${minimized ? 'w-[110px]' : 'w-32'} relative`}/>
+        <div className={`${minimized ? 'w-[110px]' : 'w-32'} bg-amber-50`}>
+          <p className={`${minimized ? 'text-sm font-normal text-center py-2' : 'text-m font-medium text-center py-3'}`}>{name}</p>
         </div>
       </div>
       {(isHovered && selected) &&
