@@ -3,14 +3,15 @@ import HoverMenu from './HoverMenu';
 
 const CharacterPortrait = ({ character, onPortraitClick, characterList, setCharacterList, selected=false, minimized=false }) => {
   let name = character['Character Name'];
+  let displayName = name;
   let imgLink = character['Image Link'];
   let rarity = character['Rarity'];
 
   // fix long names
   if (name.includes('Imbibitor Lunae')) {
-    name = 'Dan Heng IL';
+    displayName = 'Dan Heng IL';
   } else if (name.includes('Trailblazer')) {
-    name = 'Trailblazer';
+    displayName = 'Trailblazer';
   }
 
   const [isHovered, setIsHovered] = useState(false);
@@ -38,7 +39,7 @@ const CharacterPortrait = ({ character, onPortraitClick, characterList, setChara
       >
         <img src={imgLink} className={`${minimized ? 'w-[110px]' : 'w-32'} relative`}/>
         <div className={`${minimized ? 'w-[110px]' : 'w-32'} bg-amber-50`}>
-          <p className={`${minimized ? 'text-sm font-normal text-center py-2' : 'text-m font-medium text-center py-3'}`}>{name}</p>
+          <p className={`${minimized ? 'text-sm font-normal text-center py-2' : 'text-m font-medium text-center py-3'}`}>{displayName}</p>
         </div>
       </div>
       {(isHovered && selected) &&

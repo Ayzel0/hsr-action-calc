@@ -9,16 +9,32 @@ const ActionStack = ({ characterList }) => {
     }
   }));
 
-  // updates the AV for each character
-  const updateAV = () => {
-    actionValueList.sort((a, b) => a['currentAV'] - b['currentAV']);
-    let subtractAV = actionValueList[0]['currentAV'];
-    for (char of actionValueList) {
-      actionValueList['currentAV'] = actionValueList['currentAV'] - subtractAV;
-    }
-  };
+  useEffect(() => {
+    setActionValueList(characterList.map(char => {
+      return {
+        'name': char['Character Name'],
+        'baseSpd': parseInt(char['Speed']),
+        'currentAV': 10000/char['Speed']
+      }
+    }))
+  }, [characterList]);
 
-  console.log(actionValueList);
+  useEffect(() => {
+    console.log(actionValueList);
+  }, [actionValueList]);
+
+  // updates the AV for each character
+  /*
+  const updateAV = () => {
+    let newAVList = actionValueList;
+    newAVList.sort((a, b) => a['currentAV'] - b['currentAV']);
+    let subtractAV = newAVList[0]['currentAV'];
+    for (char of newAVList) {
+      newAVList['currentAV'] = newAVList['currentAV'] - subtractAV;
+    }
+    setActionValueList(newAVList);
+  };
+  */
 
   return (
     <div className='bg-inherit'>

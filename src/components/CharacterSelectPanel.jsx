@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import characters from '../data/characters.json'
 import elements from '../data/elements.json';
 import paths from '../data/paths.json';
 import CharacterPortrait from './CharacterPortrait';
