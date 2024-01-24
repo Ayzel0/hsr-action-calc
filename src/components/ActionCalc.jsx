@@ -26,16 +26,24 @@ const ActionCalc = () => {
   
   return (
     <div>
-      <div className='grid grid-cols-2 bg-blue-950'>
-        <SelectedCharacters 
-          characterList={characterList} 
-          setCharacterList={setCharacterList}
-          onPortraitClick={onPortraitClick}
-          changeCharSelectDisplay={changeCharSelectDisplay}
-        />
-        <ActionStack 
-          characterList={characterList}
-        />
+      <div className={`grid ${displayCharSelect ? 'grid-cols-2' : 'grid-cols-1'} bg-blue-950`}>
+        <div className={!displayCharSelect && 'hidden'}>
+          <SelectedCharacters 
+            characterList={characterList} 
+            setCharacterList={setCharacterList}
+            onPortraitClick={onPortraitClick}
+            changeCharSelectDisplay={changeCharSelectDisplay}
+          />
+        </div>
+        <div>
+          <button 
+            className={`absolute bg-emerald-600 top-1/2 transform -translate-y-1/2 -translate-x-3/4 hover:translate-x-0 font-bold text-3xl font-mono p-6 rounded-r-2xl transition-transform	${displayCharSelect && 'hidden'}`}
+            onClick={changeCharSelectDisplay}
+          >&gt;</button>
+          <ActionStack 
+            characterList={characterList}
+          />
+        </div>
       </div>
     </div>
   )

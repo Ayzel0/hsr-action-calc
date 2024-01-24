@@ -17,21 +17,10 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick, 
   }
 
   const resetBaseSpeeds = () => {
-    let charNames = characterList.map(char => {
-      return char['Character Name'];
-    });
-
     const newCharacterList = characterList.map(char => {
-      if (charNames.includes(char['Character Name'])) {
-        const character = characters.find(character => charNames.includes(character['Character Name']));
-        let idx = charNames.indexOf(char['Character Name']);
-        if (idx > -1) {
-          charNames.splice(idx, 1);
-        }
-        return character;
-      }
+      return characters.find(character => character['Character Name'] === char['Character Name']);
     });
-
+  
     setCharacterList(newCharacterList);
   }
 
@@ -104,7 +93,10 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick, 
       </div>
       {
       <div className='flex flex-col items-center mt-5'>
-        <button className='bg-emerald-600 p-5 rounded-full w-[60%] text-lg font-medium'>Start Simulation</button>
+        <button 
+          className='bg-emerald-600 p-5 rounded-full w-[60%] text-lg font-medium'
+          onClick={changeCharSelectDisplay}
+        >Start Simulation</button>
       </div>
       }
     </div>
