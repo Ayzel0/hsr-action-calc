@@ -4,7 +4,7 @@ import HoverMenu from './HoverMenu';
 const CharacterPortrait = ({ character, onPortraitClick, characterList, setCharacterList, selected=false, minimized=false }) => {
   let name = character['Character Name'];
   let displayName = name;
-  let imgLink = character['Image Link'];
+  let imgPath = character['Image Path'];
   let rarity = character['Rarity'];
 
   // fix long names
@@ -37,7 +37,7 @@ const CharacterPortrait = ({ character, onPortraitClick, characterList, setChara
         onClick={() => onPortraitClick(name)} 
         className={bg_classes}
       >
-        <img src={imgLink} className={`${minimized ? 'w-[110px]' : 'w-32'} relative`}/>
+        <img src={imgPath} className={`${minimized ? 'w-[110px]' : 'w-32'} relative`}/>
         <div className={`${minimized ? 'w-[110px]' : 'w-32'} bg-amber-50`}>
           <p className={`${minimized ? 'text-sm font-normal text-center py-2' : 'text-m font-medium text-center py-3'}`}>{displayName}</p>
         </div>

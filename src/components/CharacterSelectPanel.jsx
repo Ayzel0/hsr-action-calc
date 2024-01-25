@@ -28,7 +28,7 @@ const CharacterSelectPanel = ({ onPortraitClick, characters }) => {
 
   return (
     <div>
-      <div className='bg-slate-800 flex flex-col justify-center items-center p-5 bg-opacity-80'>
+      <div className='bg-slate-800 flex flex-col justify-center items-center p-5 bg-opacity-80 z-20'>
         <div className='flex flex-row'> {/* element filter */}
         {elements.map((element) => (
           <div className='mx-1 mb-2' key={element['Element']}>

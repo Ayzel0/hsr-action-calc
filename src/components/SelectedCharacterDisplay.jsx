@@ -1,6 +1,6 @@
 import CharacterPortrait from "./CharacterPortrait";
 import CharacterSelectPanel from "./CharacterSelectPanel";
-import characters from '../data/characters.json';
+import characters from '../data/characters_releasedate.json';
 import { useState, useEffect } from 'react';
 
 const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick, changeCharSelectDisplay }) => {
