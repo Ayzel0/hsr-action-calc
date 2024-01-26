@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import CharacterSelectPanel from "./CharacterSelectPanel";
 import SelectedCharacters from './SelectedCharacterDisplay';
 import ActionStack from './ActionStack';
 import characters from '../data/characters_releasedate.json';

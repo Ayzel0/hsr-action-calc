@@ -3,7 +3,7 @@ import ActionValueIcon from './ActionValueIcon';
 
 const ActionStack = ({ characterList, simStarted=false }) => {
   const [actionValueList, setActionValueList] = useState([]);
-  const [currentActionState, setCurrentActionState] = useState([]);
+  const [currentActionState, setCurrentActionState] = useState('advancing');
 
   useEffect(() => {
     const newActionValueList = characterList.map(char => ({
@@ -19,54 +19,69 @@ const ActionStack = ({ characterList, simStarted=false }) => {
 
   // advances to the next action
   const nextAction = () => {
-    const newAVList = sortedActionValueList.map(action => ({
-      ...action,
-      'currentAV': action['currentAV'] - sortedActionValueList[0]['currentAV']
-    }));
-    setActionValueList(newAVList);
+    if (currentActionState == 'advancing') {
+      const newAVList = sortedActionValueList.map(action => ({
+        ...action,
+        'currentAV': action['currentAV'] - sortedActionValueList[0]['currentAV']
+      }));
+      setActionValueList(newAVList);
+      setCurrentActionState('acting');
+    }
   };
 
   const takeAction = () => {
-    const newAVList = [
-      ...sortedActionValueList.slice(1),
-      {
-        ...sortedActionValueList[0],
-        'currentAV': 10000 / sortedActionValueList[0]['baseSpd']
-      }
-    ];
-    console.log(newAVList);
-    setActionValueList(newAVList);
+    if (currentActionState == 'acting') {
+      const newAVList = [
+        ...sortedActionValueList.slice(1),
+        {
+          ...sortedActionValueList[0],
+          'currentAV': 10000 / sortedActionValueList[0]['baseSpd']
+        }
+      ];
+      console.log(newAVList);
+      setActionValueList(newAVList);
+      setCurrentActionState('advancing');
+    }
   }
 
   return (
-    <div className='bg-inherit'>
-      {!simStarted && <h1 className='text-4xl font-semibold text-white px-5 pt-5'>Action Stack</h1>}
-      <div className='bg-zinc-800 m-5 p-8'>
-        <h2 className='text-2xl font-semibold text-white'>Actions</h2>
-        <div className='flex flex-row'>
-          <div> { /* icon list */ }
-            {actionValueList.map((action, index) => (
-            <div 
-              key={`${action['Name']} ${index + 1}`}
-            >
-              <ActionValueIcon 
-                avListObj={action}
-              />
+    <div>
+      <div className='bg-inherit'>
+        {!simStarted && <h1 className='text-4xl font-semibold text-white px-5 pt-5'>Action Stack</h1>}
+        <div className='bg-zinc-800 m-5 p-8'>
+          <h2 className='text-2xl font-semibold text-white'>Actions</h2>
+          <div className='flex flex-row'>
+            <div> { /* icon list */ }
+              {actionValueList.map((action, index) => (
+              <div 
+                key={`${action['Name']} ${index + 1}`}
+              >
+                <ActionValueIcon 
+                  currentActionState={currentActionState}
+                  avListObj={action}
+                  actionIndex={index}
+                  simStarted={simStarted}
+                />
+              </div>
+            ))}
             </div>
-          ))}
+            {simStarted &&
+            <div>
+              {currentActionState === 'advancing' ?
+              <button 
+                className='text-white p-4 ml-8 rounded-xl bg-emerald-600 hover:bg-emerald-800'
+                onClick={nextAction}
+              >Advance to Next Action</button>
+              :
+              <button 
+                className='text-white p-4 ml-8 rounded-xl bg-emerald-600 hover:bg-emerald-800'
+                onClick={takeAction}
+              >Take Action
+              </button>
+              }
+            </div>
+            }
           </div>
-          {simStarted &&
-          <div className='flex flex-col'>
-            <button 
-              className='text-white p-4 ml-8 mt-2 rounded-xl bg-emerald-600 hover:bg-emerald-800'
-              onClick={nextAction}
-            >Advance to Next Action</button>
-            <button 
-              className='text-white p-4 ml-8 mt-5 rounded-xl bg-emerald-600 hover:bg-emerald-800'
-              onClick={takeAction}
-            >Take Action
-            </button>
-          </div>}
         </div>
       </div>
     </div>
