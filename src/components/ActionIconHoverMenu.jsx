@@ -1,19 +1,118 @@
-const ActionIconHoverMenu = () => {
+import { useState, useEffect } from 'react';
+
+const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList }) => {
+  const [speed, setSpeed] = useState(avListObj['baseSpd']);
+  const [av, setAV] = useState(avListObj['currentAV']);
+
+  // local states
+  const [speedPercentChange, setSpeedPercentChange] = useState(0);
+  const [speedFlatChange, setSpeedFlatChange] = useState(0);
+  const [avPercentChange, setAVPercentChange] = useState(0);
+  const [avFlatChange, setAVFlatChange] = useState(0);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // new speed value
+    const newSpeed = speed * (1+(speedPercentChange/100)) + speedFlatChange;
+    
+    // speed buffed/debuffed av - updating speed effect on AV first then direct AV change
+    let newAV = (av * speed/newSpeed);
+
+    // update av based on user input AV change
+    newAV = newAV*(1-(avPercentChange/100)) - avFlatChange;
+
+    setSpeed(newSpeed);
+    setAV(newAV);
+  }
+
+  useEffect(() => {
+    // update av list
+    const newAVList = actionValueList.map(avObj => {
+      if (avListObj['name'] === avObj['name']) {
+        return {...avObj, 'baseSpd': speed, 'currentAV': av};
+      }
+      return avObj;
+    })
+
+    // sort the av list
+    const sortedAVList = newAVList.sort((a, b) => a['currentAV'] - b['currentAV']);
+    setActionValueList(sortedAVList);
+  }, [speed, av]);
+
+  const handleSpeedChange = (e) => {
+    const { name, value } = e.target;
+    const numericValue = parseFloat(value);
+    if (name === 'speedPercentChange') {
+      setSpeedPercentChange(numericValue);
+    } else if (name === 'flatSpeedChange') {
+      setSpeedFlatChange(numericValue);
+    }
+  }
+
+  const handleAVChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'avPercentChange') {
+      setAVPercentChange(value);
+    } else if (name === 'avFlatChange') {
+      if (av - value > 0) {
+        setAVFlatChange(value);
+      } else {
+        setAVFlatChange(av);
+      }
+    }
+  }
+
   return (
-    <div className='bg-emerald-600 py-2 px-5 rounded-2xl text-white'>
+    <div className='bg-emerald-800 py-2 px-5 rounded-2xl text-white w-[300px]'>
       <h1 className='text-xl font-bold'>Action/Speed Change</h1>
       <div>
-        <h2 className='text-lg mt-2'>Action Advance</h2>
-        <form className='text-black'>
-          <input 
-            type='number'
-          />
-        </form>
-        <h2 className='text-lg mt-2'>Speed Change</h2>
-        <form className='text-black mb-2'>
-          <input 
-            type='number'
-          />
+        <h2 className='text-lg mt-4 font-semibold'>Action Advance</h2>
+        <form 
+          className='flex flex-col my-2'
+          onSubmit={handleSubmit}
+        >
+          <div className='flex flex-row'>
+            <p>% Change</p>
+            <input 
+              type='number'
+              name='avPercentChange'
+              className='absolute right-2 text-black'
+              onChange={handleAVChange}
+            />
+          </div>
+          <div className='flex flex-row mt-2'>
+            <p>AV Change</p>
+            <input 
+              type='number'
+              name='avFlatChange'
+              className='absolute right-2 text-black'
+              onChange={handleAVChange}
+            />
+          </div>
+          <h2 className='text-lg mt-4 font-semibold'>Speed Change</h2>
+          <div className='flex flex-row mt-2'>
+            <p>% Change</p>
+            <input 
+              type='number'
+              name='speedPercentChange'
+              className='absolute right-2 text-black'
+              onChange={handleSpeedChange}
+            />
+          </div>
+          <div className='flex flex-row mt-2'>
+            <p>Flat Change</p>
+            <input 
+              type='number'
+              name='speedFlatChange'
+              className='absolute right-2 text-black'
+              onChange={handleSpeedChange}
+            />
+          </div>
+          <button 
+            type='submit'
+            className='bg-indigo-950 rounded-xl p-2 mt-4'
+          >Update</button>
         </form>
       </div>
     </div>

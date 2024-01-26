@@ -4,12 +4,15 @@ import ActionValueIcon from './ActionValueIcon';
 const ActionStack = ({ characterList, simStarted=false }) => {
   const [actionValueList, setActionValueList] = useState([]);
   const [currentActionState, setCurrentActionState] = useState('advancing');
+  const [avElapsed, setAVElapsed] = useState(0);
+  const [actionHistory, setActionHistory] = useState([]);
 
   useEffect(() => {
     const newActionValueList = characterList.map(char => ({
       'name': char['Character Name'],
       'baseSpd': parseInt(char['Speed']),
       'currentAV': 10000 / char['Speed'],
+      'turnCounter': 0,
       'icon': char['Image Path']
     })).sort((a, b) => a['currentAV'] - b['currentAV']);
     setActionValueList(newActionValueList);
@@ -20,6 +23,7 @@ const ActionStack = ({ characterList, simStarted=false }) => {
   // advances to the next action
   const nextAction = () => {
     if (currentActionState == 'advancing') {
+      setAVElapsed(avElapsed + sortedActionValueList[0]['currentAV'])
       const newAVList = sortedActionValueList.map(action => ({
         ...action,
         'currentAV': action['currentAV'] - sortedActionValueList[0]['currentAV']
@@ -31,22 +35,23 @@ const ActionStack = ({ characterList, simStarted=false }) => {
 
   const takeAction = () => {
     if (currentActionState == 'acting') {
-      const newAVList = [
+      let newAVList = [
         ...sortedActionValueList.slice(1),
         {
           ...sortedActionValueList[0],
-          'currentAV': 10000 / sortedActionValueList[0]['baseSpd']
+          'currentAV': 10000 / sortedActionValueList[0]['baseSpd'],
+          'turnCounter': sortedActionValueList[0]['turnCounter'] + 1
         }
       ];
-      console.log(newAVList);
+      newAVList = newAVList.sort((a, b) => a['currentAV'] - b['currentAV']);
       setActionValueList(newAVList);
       setCurrentActionState('advancing');
     }
   }
 
   return (
-    <div>
-      <div className='bg-inherit'>
+    <div className='grid grid-cols-2'>
+      <div className='bg-inherit'> { /* simulating */ }
         {!simStarted && <h1 className='text-4xl font-semibold text-white px-5 pt-5'>Action Stack</h1>}
         <div className='bg-zinc-800 m-5 p-8'>
           <h2 className='text-2xl font-semibold text-white'>Actions</h2>
@@ -59,6 +64,8 @@ const ActionStack = ({ characterList, simStarted=false }) => {
                 <ActionValueIcon 
                   currentActionState={currentActionState}
                   avListObj={action}
+                  actionValueList={actionValueList}
+                  setActionValueList={setActionValueList}
                   actionIndex={index}
                   simStarted={simStarted}
                 />
@@ -83,6 +90,9 @@ const ActionStack = ({ characterList, simStarted=false }) => {
             }
           </div>
         </div>
+      </div>
+      <div> { /* displaying results */ }
+        <p>{avElapsed}</p>
       </div>
     </div>
   )
