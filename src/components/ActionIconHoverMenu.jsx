@@ -45,7 +45,7 @@ const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList })
     const numericValue = parseFloat(value);
     if (name === 'speedPercentChange') {
       setSpeedPercentChange(numericValue);
-    } else if (name === 'flatSpeedChange') {
+    } else if (name === 'speedFlatChange') {
       setSpeedFlatChange(numericValue);
     }
   }
