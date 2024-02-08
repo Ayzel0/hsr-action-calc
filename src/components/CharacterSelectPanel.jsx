@@ -9,20 +9,32 @@ const CharacterSelectPanel = ({ onPortraitClick, characters }) => {
   const [activePaths, setActivePaths] = useState(paths.map(path => path['Path']));
 
   const changeActiveElements = (element) => {
-    if (activeElements.includes(element)) {
-      setActiveElements(activeElements.filter(activeElement => activeElement !== element));
-    }
-    else {
+    // nothing yet selected
+    if (activeElements.length === 7) {
+      setActiveElements(activeElements.filter(activeElement => activeElement === element))
+    } 
+    // element has not yet been selected and we're selecting it now
+    else if (!activeElements.includes(element)) {
       setActiveElements([...activeElements, element])
+    }
+    // deselect
+    else {
+      setActiveElements(activeElements.filter(activeElement => activeElement !== element))
     }
   }
 
   const changeActivePaths = (path) => {
-    if (activePaths.includes(path)) {
-      setActivePaths(activePaths.filter(activePath => activePath !== path));
+    // nothing yet selected
+    if (activePaths.length === 7) {
+      setActivePaths(activePaths.filter(activePath => activePath === path))
     } 
+    // element has not yet been selected and we're selecting it now
+    else if (!activePaths.includes(path)) {
+      setActivePaths([...activePaths, path])
+    }
+    // deselect
     else {
-      setActivePaths([...activePaths, path]);
+      setActivePaths(activePaths.filter(activePath => activePath !== path))
     }
   }
 
@@ -33,6 +45,7 @@ const CharacterSelectPanel = ({ onPortraitClick, characters }) => {
         {elements.map((element) => (
           <div className='mx-1 mb-2' key={element['Element']}>
             <FilterButton 
+              isActive={activeElements.includes(element['Element']) ? true : false}
               imageLink={element['Image Link']} 
               onClick={() => changeActiveElements(element['Element'])}
               iconType='element'
@@ -44,6 +57,7 @@ const CharacterSelectPanel = ({ onPortraitClick, characters }) => {
         {paths.map((path) => (
           <div className='mx-1 mb-2' key={path['Path']}>
             <FilterButton 
+              isActive={activePaths.includes(path['Path']) ? true : false}
               imageLink={path['Image Link']}
               onClick={() => changeActivePaths(path['Path'])}
               iconType='path'
