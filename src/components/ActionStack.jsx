@@ -30,6 +30,7 @@ const ActionStack = ({ characterList, simStarted=false }) => {
     setActionValueList(newActionValueList);
     setAVElapsed(0);
     setCurrentActionState('advancing');
+    setActionHistory([]);
   }
 
   const sortedActionValueList = [...actionValueList].sort((a, b) => a['currentAV'] - b['currentAV']);
@@ -37,7 +38,20 @@ const ActionStack = ({ characterList, simStarted=false }) => {
   // advances to the next action
   const nextAction = () => {
     if (currentActionState == 'advancing') {
-      setAVElapsed(avElapsed + sortedActionValueList[0]['currentAV'])
+      // for history changes
+      setAVElapsed(prevAVElapsed => {
+        const newAVElapsed = prevAVElapsed + sortedActionValueList[0]['currentAV'];
+        
+        // update actionHistory
+        setActionHistory(prevActionHistory => {
+          const newActionHistory = {...sortedActionValueList[0], currentAV: newAVElapsed};
+          return [...prevActionHistory, newActionHistory];
+        })
+
+        return newAVElapsed;
+      })
+
+      // update stack
       const newAVList = sortedActionValueList.map(action => ({
         ...action,
         'currentAV': action['currentAV'] - sortedActionValueList[0]['currentAV']
@@ -63,20 +77,69 @@ const ActionStack = ({ characterList, simStarted=false }) => {
     }
   }
 
+  // for creating action groups for action history
+  const groupActions = (actions) => {
+    const groups = {};
+
+    actions.forEach(action => {
+      const actionValue = action.currentAV;
+    }) 
+  }
+
   return (
-    <div className='grid grid-cols-2'>
-      <div className='bg-inherit'> { /* simulating */ }
-        {!simStarted && <h1 className='text-4xl font-semibold text-white px-5 pt-5'>Action Stack</h1>}
-        <div className='bg-zinc-800 m-5 p-8'>
-          <h2 className='text-2xl font-semibold text-white'>Actions</h2>
-          <div className='flex flex-row'>
-            <div className='flex flex-col'> { /* icon list */ }
-              {actionValueList.map((action, index) => (
-              <div 
-                key={`${action['Name']} ${index + 1}`}
-              >
+    <div>
+      {!simStarted && <h1 className='text-4xl font-semibold text-white px-5 pt-5'>Action Stack</h1>}
+      <div className='grid grid-cols-2'>
+        <div className='bg-inherit'> { /* simulating */ }
+          <div className='bg-zinc-800 m-5 p-8'>
+            <h2 className='text-2xl font-semibold text-white'>Actions</h2>
+            <div className='flex flex-row'>
+              <div className='flex flex-col'> { /* icon list */ }
+                {actionValueList.map((action, index) => (
+                <div 
+                  key={`${action['Name']} ${index + 1}`}
+                >
+                  <ActionValueIcon 
+                    currentActionState={currentActionState}
+                    avListObj={action}
+                    actionValueList={actionValueList}
+                    setActionValueList={setActionValueList}
+                    actionIndex={index}
+                    simStarted={simStarted}
+                  />
+                </div>
+              ))}
+              <button
+                className={`text-white p-4 mt-5 w-[86%] rounded-xl bg-emerald-600 hover:bg-emerald-800 ${characterList.length === 0 && 'hidden'}`}
+                onClick={resetActionValueList}
+              >Reset Actions</button>
+              </div>
+              {simStarted &&
+              <div>
+                {currentActionState === 'advancing' ?
+                <button 
+                  className='text-white p-4 ml-8 rounded-xl bg-emerald-600 hover:bg-emerald-800'
+                  onClick={nextAction}
+                >Advance to Next Action</button>
+                :
+                <button 
+                  className='text-white p-4 ml-8 rounded-xl bg-emerald-600 hover:bg-emerald-800'
+                  onClick={takeAction}
+                >Take Action
+                </button>
+                }
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+        <div> { /* displaying results */ }
+          <div className='bg-zinc-800 m-5 p-8'>
+            <h2 className='text-2xl font-semibold text-white'>Action History</h2>
+            {actionHistory.map((action, index) => (
+              <div key={`${action['name']} ${index + 1}`}>
                 <ActionValueIcon 
-                  currentActionState={currentActionState}
+                  displayOnly={true}
                   avListObj={action}
                   actionValueList={actionValueList}
                   setActionValueList={setActionValueList}
@@ -85,32 +148,8 @@ const ActionStack = ({ characterList, simStarted=false }) => {
                 />
               </div>
             ))}
-            <button
-              className={`text-white p-4 mt-5 w-[86%] rounded-xl bg-emerald-600 hover:bg-emerald-800 ${characterList.length === 0 && 'hidden'}`}
-              onClick={resetActionValueList}
-            >Reset Actions</button>
-            </div>
-            {simStarted &&
-            <div>
-              {currentActionState === 'advancing' ?
-              <button 
-                className='text-white p-4 ml-8 rounded-xl bg-emerald-600 hover:bg-emerald-800'
-                onClick={nextAction}
-              >Advance to Next Action</button>
-              :
-              <button 
-                className='text-white p-4 ml-8 rounded-xl bg-emerald-600 hover:bg-emerald-800'
-                onClick={takeAction}
-              >Take Action
-              </button>
-              }
-            </div>
-            }
           </div>
         </div>
-      </div>
-      <div> { /* displaying results */ }
-        <p>{avElapsed}</p>
       </div>
     </div>
   )
