@@ -6,6 +6,7 @@ const ActionStack = ({ characterList, simStarted=false }) => {
   const [currentActionState, setCurrentActionState] = useState('advancing');
   const [avElapsed, setAVElapsed] = useState(0);
   const [actionHistory, setActionHistory] = useState([]);
+  console.log(characterList.length);
 
   useEffect(() => {
     const newActionValueList = characterList.map(char => ({
@@ -17,6 +18,19 @@ const ActionStack = ({ characterList, simStarted=false }) => {
     })).sort((a, b) => a['currentAV'] - b['currentAV']);
     setActionValueList(newActionValueList);
   }, [characterList]);
+
+  const resetActionValueList = () => {
+    const newActionValueList = characterList.map(char => ({
+      'name': char['Character Name'],
+      'baseSpd': parseInt(char['Speed']),
+      'currentAV': 10000 / char['Speed'],
+      'turnCounter': 0,
+      'icon': char['Image Path']
+    })).sort((a, b) => a['currentAV'] - b['currentAV']);
+    setActionValueList(newActionValueList);
+    setAVElapsed(0);
+    setCurrentActionState('advancing');
+  }
 
   const sortedActionValueList = [...actionValueList].sort((a, b) => a['currentAV'] - b['currentAV']);
 
@@ -56,7 +70,7 @@ const ActionStack = ({ characterList, simStarted=false }) => {
         <div className='bg-zinc-800 m-5 p-8'>
           <h2 className='text-2xl font-semibold text-white'>Actions</h2>
           <div className='flex flex-row'>
-            <div> { /* icon list */ }
+            <div className='flex flex-col'> { /* icon list */ }
               {actionValueList.map((action, index) => (
               <div 
                 key={`${action['Name']} ${index + 1}`}
@@ -71,6 +85,10 @@ const ActionStack = ({ characterList, simStarted=false }) => {
                 />
               </div>
             ))}
+            <button
+              className={`text-white p-4 mt-5 w-[86%] rounded-xl bg-emerald-600 hover:bg-emerald-800 ${characterList.length === 0 && 'hidden'}`}
+              onClick={resetActionValueList}
+            >Reset Actions</button>
             </div>
             {simStarted &&
             <div>

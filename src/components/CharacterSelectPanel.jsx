@@ -45,7 +45,7 @@ const CharacterSelectPanel = ({ onPortraitClick, characters }) => {
         {elements.map((element) => (
           <div className='mx-1 mb-2' key={element['Element']}>
             <FilterButton 
-              isActive={activeElements.includes(element['Element']) ? true : false}
+              isActive={activeElements.includes(element['Element'])}
               imageLink={element['Image Link']} 
               onClick={() => changeActiveElements(element['Element'])}
               iconType='element'
@@ -57,7 +57,7 @@ const CharacterSelectPanel = ({ onPortraitClick, characters }) => {
         {paths.map((path) => (
           <div className='mx-1 mb-2' key={path['Path']}>
             <FilterButton 
-              isActive={activePaths.includes(path['Path']) ? true : false}
+              isActive={activePaths.includes(path['Path'])}
               imageLink={path['Image Link']}
               onClick={() => changeActivePaths(path['Path'])}
               iconType='path'
