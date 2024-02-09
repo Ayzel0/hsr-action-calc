@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
 const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList }) => {
-  const [speed, setSpeed] = useState(avListObj['baseSpd']);
-  const [spdBuffDuration, setSpdBuffDuration] = useState(0);
+  const [speed, setSpeed] = useState(avListObj['buffedSpd']);
+  const [spdBuffDuration, setSpdBuffDuration] = useState(avListObj['spdBuffDuration']);
   const [av, setAV] = useState(avListObj['currentAV']);
 
   // local states

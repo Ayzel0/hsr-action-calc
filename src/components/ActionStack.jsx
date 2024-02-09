@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ActionValueIcon from './ActionValueIcon';
+import spdIcon from '../../public/misc_icons/spd_icon.png';
 
 const ActionStack = ({ characterList, simStarted=false }) => {
   const [actionValueList, setActionValueList] = useState([]);
@@ -133,11 +134,6 @@ const ActionStack = ({ characterList, simStarted=false }) => {
                   key={`${action['Name']} ${index + 1}`}
                   className='flex flex-row'
                 >
-                  <div
-                    className='w-[6vw]'
-                  > { /* section for buffs */ }
-                    <p>{action['spdBuffDuration']}</p>
-                  </div>
                   <ActionValueIcon 
                     currentActionState={currentActionState}
                     avListObj={action}
@@ -146,10 +142,26 @@ const ActionStack = ({ characterList, simStarted=false }) => {
                     actionIndex={index}
                     simStarted={simStarted}
                   />
+                  <div
+                    className='w-[8vw] ml-5'
+                  > { /* section for buffs */ }
+                    {action['spdBuffDuration'] > 0 &&
+                    <div className='flex flex-row ml-0 relative'> { /* speed buffs  */ }
+                      <img 
+                        src={spdIcon}
+                        className='w-[3vw]'
+                      />
+                      <p className='absolute left-[2.1vw] text-emerald-400 font-mono font-extrabold text-2xl'>^</p>
+                      <div className='p-1 flex flex-col justify-center'>
+                        <p className='text-white'><span className='font-semibold text-emerald-200'>{action['spdBuffDuration']}</span> turns left</p>
+                      </div>
+                    </div>
+                    }
+                  </div>
                 </div>
               ))}
               <button
-                className={`text-white p-4 mt-5 w-[86%] rounded-xl bg-emerald-600 hover:bg-emerald-800 ${characterList.length === 0 && 'hidden'}`}
+                className={`text-white p-4 mt-5 w-[59%] rounded-xl bg-emerald-600 hover:bg-emerald-800 ${characterList.length === 0 && 'hidden'}`}
                 onClick={resetActionValueList}
               >Reset Actions</button>
               </div>
