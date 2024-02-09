@@ -1,10 +1,14 @@
 import CharacterPortrait from "./CharacterPortrait";
 import CharacterSelectPanel from "./CharacterSelectPanel";
 import characters from '../data/characters_releasedate.json';
+import elements from '../data/elements.json';
+import paths from '../data/paths.json';
 import { useState, useEffect } from 'react';
 
 const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick, changeCharSelectDisplay }) => {
   const [showSelect, setShowSelect] = useState(false);
+  const [activeElements, setActiveElements] = useState(elements.map(element => element['Element']));
+  const [activePaths, setActivePaths] = useState(paths.map(path => path['Path']));
 
   useEffect(() => {
     if (characterList.length == 4) {
@@ -64,6 +68,10 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick, 
           <CharacterSelectPanel 
             onPortraitClick={onPortraitClick}
             characters={characters}
+            activeElements={activeElements}
+            setActiveElements={setActiveElements}
+            activePaths={activePaths}
+            setActivePaths={setActivePaths}
           />
         </div>
         }
@@ -83,6 +91,10 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick, 
           <CharacterSelectPanel 
             onPortraitClick={onPortraitClick}
             characters={characters}
+            activeElements={activeElements}
+            setActiveElements={setActiveElements}
+            activePaths={activePaths}
+            setActivePaths={setActivePaths}
           />}
         </div>
       </div>

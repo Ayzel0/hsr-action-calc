@@ -4,39 +4,36 @@ import paths from '../data/paths.json';
 import CharacterPortrait from './CharacterPortrait';
 import FilterButton from './FilterButton';
 
-const CharacterSelectPanel = ({ onPortraitClick, characters }) => {
-  const [activeElements, setActiveElements] = useState(elements.map(element => element['Element']));
-  const [activePaths, setActivePaths] = useState(paths.map(path => path['Path']));
-
+const CharacterSelectPanel = ({ onPortraitClick, characters, activeElements, setActiveElements, activePaths, setActivePaths }) => {
   const changeActiveElements = (element) => {
     // nothing yet selected
     if (activeElements.length === 7) {
-      setActiveElements(activeElements.filter(activeElement => activeElement === element))
+      setActiveElements(activeElements.filter(activeElement => activeElement === element));
     } 
     // element has not yet been selected and we're selecting it now
     else if (!activeElements.includes(element)) {
-      setActiveElements([...activeElements, element])
+      setActiveElements([...activeElements, element]);
     }
     // deselect
     else {
-      setActiveElements(activeElements.filter(activeElement => activeElement !== element))
+      setActiveElements(activeElements.filter(activeElement => activeElement !== element));
     }
-  }
+  };
 
   const changeActivePaths = (path) => {
     // nothing yet selected
     if (activePaths.length === 7) {
-      setActivePaths(activePaths.filter(activePath => activePath === path))
+      setActivePaths(activePaths.filter(activePath => activePath === path));
     } 
     // element has not yet been selected and we're selecting it now
     else if (!activePaths.includes(path)) {
-      setActivePaths([...activePaths, path])
+      setActivePaths([...activePaths, path]);
     }
     // deselect
     else {
-      setActivePaths(activePaths.filter(activePath => activePath !== path))
+      setActivePaths(activePaths.filter(activePath => activePath !== path));
     }
-  }
+  };
 
   return (
     <div>
@@ -44,24 +41,28 @@ const CharacterSelectPanel = ({ onPortraitClick, characters }) => {
         <div className='flex flex-row'> {/* element filter */}
         {elements.map((element) => (
           <div className='mx-1 mb-2' key={element['Element']}>
+            {activeElements &&
             <FilterButton 
               isActive={activeElements.includes(element['Element'])}
               imageLink={element['Image Link']} 
               onClick={() => changeActiveElements(element['Element'])}
               iconType='element'
             />
+            }
           </div>
         ))}
         </div>
         <div className='flex flex-row'> {/* path filter */}
         {paths.map((path) => (
           <div className='mx-1 mb-2' key={path['Path']}>
+            {activePaths &&
             <FilterButton 
               isActive={activePaths.includes(path['Path'])}
               imageLink={path['Image Link']}
               onClick={() => changeActivePaths(path['Path'])}
               iconType='path'
             />
+            }
           </div>
         ))}
         </div>
