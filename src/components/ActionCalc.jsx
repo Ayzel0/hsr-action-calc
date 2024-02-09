@@ -1,15 +1,26 @@
 import { useState, useEffect } from 'react'
 import SelectedCharacters from './SelectedCharacterDisplay';
 import ActionStack from './ActionStack';
-import characters from '../data/characters_releasedate.json';
+import characters_raw from '../data/characters_releasedate.json';
 
 const ActionCalc = () => {
+  const [characters, setCharacters] = useState(characters_raw);
   const [characterList, setCharacterList] = useState([]);
   const [simStarted, setSimStarted] = useState(false);
 
   const changeCharSelectDisplay = () => {
     setSimStarted(!simStarted);
   }
+
+  // add a "speed" attribute to all characters to represent the speed w/ relics but without buffs
+  useEffect(() => {
+    const updatedCharacters = characters.map(character => ({
+      ...character,
+      Speed: character['Base Speed']
+    }))
+
+    setCharacters(updatedCharacters);
+  }, [])
 
   const onPortraitClick = (charName) => {
     const charListNames = characterList.map(character => character['Character Name']);
@@ -28,6 +39,7 @@ const ActionCalc = () => {
       <div className={`grid ${!simStarted ? 'grid-cols-2' : 'grid-cols-1'} bg-blue-950`}>
         <div className={`${simStarted && 'hidden'} z-20`}>
           <SelectedCharacters 
+            characters={characters}
             characterList={characterList} 
             setCharacterList={setCharacterList}
             onPortraitClick={onPortraitClick}

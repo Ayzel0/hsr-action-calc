@@ -26,7 +26,7 @@ const HoverMenu = ({ character, characterList, setCharacterList }) => {
       <div className='bg-emerald-800 text-white rounded-2xl pb-5'>
         <h1 className='font-semibold text-xl p-5'>Individual Character Portrait Options</h1>
         <div className='pl-5 flex flex-col'>
-          <h2 className='text-lg mb-2'>Adjust Base Speed</h2>
+          <h2 className='text-lg mb-2'>Adjust Unbuffed Speed</h2>
           <form className='text-black flex flex-row relative' onSubmit={handleSubmit}>
             <input 
               type='number'

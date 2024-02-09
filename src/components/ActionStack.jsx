@@ -6,12 +6,17 @@ const ActionStack = ({ characterList, simStarted=false }) => {
   const [currentActionState, setCurrentActionState] = useState('advancing');
   const [avElapsed, setAVElapsed] = useState(0);
   const [actionHistory, setActionHistory] = useState([]);
-  console.log(characterList.length);
+  const [actionGroups, setActionGroups] = useState({});
+  const [firstGroupSize, setFirstGroupSize] = useState(150);
+  const [subsequentGroupSize, setSubsequentGroupSize] = useState(100);
 
   useEffect(() => {
     const newActionValueList = characterList.map(char => ({
       'name': char['Character Name'],
-      'baseSpd': parseInt(char['Speed']),
+      'baseSpd': parseInt(char['Base Speed']),
+      'unbuffedSpd': parseInt(char['Speed']),
+      'buffedSpd': parseInt(char['Speed']),
+      'spdBuffDuration': 0,
       'currentAV': 10000 / char['Speed'],
       'turnCounter': 0,
       'icon': char['Image Path']
@@ -22,7 +27,10 @@ const ActionStack = ({ characterList, simStarted=false }) => {
   const resetActionValueList = () => {
     const newActionValueList = characterList.map(char => ({
       'name': char['Character Name'],
-      'baseSpd': parseInt(char['Speed']),
+      'baseSpd': parseInt(char['Base Speed']),
+      'unbuffedSpd': parseInt(char['Speed']),
+      'buffedSpd': parseInt(char['Speed']), // as a note, buffedSpd == unbuffedSpd without speed buffs
+      'spdBuffDuration': 0,
       'currentAV': 10000 / char['Speed'],
       'turnCounter': 0,
       'icon': char['Image Path']
@@ -63,15 +71,19 @@ const ActionStack = ({ characterList, simStarted=false }) => {
 
   const takeAction = () => {
     if (currentActionState == 'acting') {
+      // move top character to bottom of stack and update speed buffs
       let newAVList = [
         ...sortedActionValueList.slice(1),
         {
           ...sortedActionValueList[0],
-          'currentAV': 10000 / sortedActionValueList[0]['baseSpd'],
-          'turnCounter': sortedActionValueList[0]['turnCounter'] + 1
+          'spdBuffDuration': (sortedActionValueList[0]['spdBuffDuration'] === 0 ? 0 : sortedActionValueList[0]['spdBuffDuration'] - 1),
+          'buffedSpd': [0, 1].includes(sortedActionValueList[0]['spdBuffDuration']) ? sortedActionValueList[0]['unbuffedSpd'] : sortedActionValueList[0]['buffedSpd'],
+          'currentAV': 10000 / ([0, 1].includes(sortedActionValueList[0]['spdBuffDuration']) ? sortedActionValueList[0]['unbuffedSpd'] : sortedActionValueList[0]['buffedSpd']),
+          'turnCounter': sortedActionValueList[0]['turnCounter'] + 1,
         }
       ];
       newAVList = newAVList.sort((a, b) => a['currentAV'] - b['currentAV']);
+      console.log(newAVList);
       setActionValueList(newAVList);
       setCurrentActionState('advancing');
     }
@@ -83,8 +95,29 @@ const ActionStack = ({ characterList, simStarted=false }) => {
 
     actions.forEach(action => {
       const actionValue = action.currentAV;
-    }) 
+      let groupKey = 0;
+      if (!(actionValue <= 150)) {
+        let adjustedAV = actionValue - 50;
+        if (adjustedAV % 100 === 0) {
+          groupKey = adjustedAV/100 - 1;
+        } else {
+          groupKey = Math.floor(adjustedAV/100);
+        }
+      }
+      
+      if (!groups[groupKey]) {
+        groups[groupKey] = []
+      }
+
+      groups[groupKey].push(action);
+    });
+
+    return groups;
   }
+
+  useEffect(() => {
+    setActionGroups(groupActions(actionHistory));
+  }, [actionHistory]);
 
   return (
     <div>
@@ -98,7 +131,13 @@ const ActionStack = ({ characterList, simStarted=false }) => {
                 {actionValueList.map((action, index) => (
                 <div 
                   key={`${action['Name']} ${index + 1}`}
+                  className='flex flex-row'
                 >
+                  <div
+                    className='w-[6vw]'
+                  > { /* section for buffs */ }
+                    <p>{action['spdBuffDuration']}</p>
+                  </div>
                   <ActionValueIcon 
                     currentActionState={currentActionState}
                     avListObj={action}
@@ -133,22 +172,25 @@ const ActionStack = ({ characterList, simStarted=false }) => {
             </div>
           </div>
         </div>
-        <div> { /* displaying results */ }
-          <div className='bg-zinc-800 m-5 p-8'>
-            <h2 className='text-2xl font-semibold text-white'>Action History</h2>
-            {actionHistory.map((action, index) => (
-              <div key={`${action['name']} ${index + 1}`}>
-                <ActionValueIcon 
-                  displayOnly={true}
-                  avListObj={action}
-                  actionValueList={actionValueList}
-                  setActionValueList={setActionValueList}
-                  actionIndex={index}
-                  simStarted={simStarted}
-                />
-              </div>
-            ))}
-          </div>
+        <div className='bg-zinc-800 m-5 p-8'> { /* displaying results */ }
+          <h2 className='text-2xl font-semibold text-white'>Action History</h2>
+          {Object.entries(actionGroups).map(([groupNumber, actions]) => (
+            <div key={groupNumber} className='bg-neutral-600 text-white p-3 my-5'>
+              <h3 className='text-lg font-semibold'><span className='font-bold text-blue-200'>Cycle {groupNumber}:</span> {groupNumber == 0 ? 0 : firstGroupSize + subsequentGroupSize*(groupNumber-1)} to {firstGroupSize + subsequentGroupSize*groupNumber} AV</h3>
+              {actions.map((action, index) => (
+                <div key={`${action['name']} ${index}`}>
+                  <ActionValueIcon 
+                    displayOnly={true}
+                    avListObj={action}
+                    actionValueList={actionValueList}
+                    setActionValueList={setActionValueList}
+                    actionIndex={index}
+                    simStarted={simStarted}
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList }) => {
   const [speed, setSpeed] = useState(avListObj['baseSpd']);
+  const [spdBuffDuration, setSpdBuffDuration] = useState(0);
   const [av, setAV] = useState(avListObj['currentAV']);
 
   // local states
@@ -9,28 +10,39 @@ const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList })
   const [speedFlatChange, setSpeedFlatChange] = useState(0);
   const [avPercentChange, setAVPercentChange] = useState(0);
   const [avFlatChange, setAVFlatChange] = useState(0);
+  const [buffDurationChange, setBuffDurationChange] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // new speed value
-    const newSpeed = speed * (1+(speedPercentChange/100)) + speedFlatChange;
+    const baseSpd = avListObj['baseSpd'];
+    const newSpd = baseSpd * (1+(speedPercentChange/100)) + speedFlatChange;
     
     // speed buffed/debuffed av - updating speed effect on AV first then direct AV change
-    let newAV = (av * speed/newSpeed);
+    let newAV = (av * speed/newSpd);
 
     // update av based on user input AV change
-    newAV = newAV*(1-(avPercentChange/100)) - avFlatChange;
+    newAV = newAV - avFlatChange - (avPercentChange/100)*(10000/newSpd);
+    if (newAV < 0) {
+      newAV = 0;
+    }
 
-    setSpeed(newSpeed);
+    setSpeed(newSpd);
     setAV(newAV);
+    setSpdBuffDuration(buffDurationChange);
   }
 
   useEffect(() => {
     // update av list
     const newAVList = actionValueList.map(avObj => {
       if (avListObj['name'] === avObj['name']) {
-        return {...avObj, 'baseSpd': speed, 'currentAV': av};
+        return {
+          ...avObj, 
+          'buffedSpd': speed, 
+          'currentAV': av,
+          'spdBuffDuration': parseInt(spdBuffDuration),
+        };
       }
       return avObj;
     })
@@ -38,7 +50,7 @@ const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList })
     // sort the av list
     const sortedAVList = newAVList.sort((a, b) => a['currentAV'] - b['currentAV']);
     setActionValueList(sortedAVList);
-  }, [speed, av]);
+  }, [speed, av, spdBuffDuration]);
 
   const handleSpeedChange = (e) => {
     const { name, value } = e.target;
@@ -61,6 +73,10 @@ const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList })
         setAVFlatChange(av);
       }
     }
+  }
+
+  const handleBuffDurationChange = (e) => {
+    setBuffDurationChange(e.target.value);
   }
 
   return (
@@ -107,6 +123,16 @@ const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList })
               name='speedFlatChange'
               className='absolute right-2 text-black'
               onChange={handleSpeedChange}
+            />
+          </div>
+          <div className='flex flex-row mt-2'>
+            <p>Buff Duration</p>
+            <input 
+              min={0}
+              type='number'
+              name='speedBuffDuration'
+              className='absolute right-2 text-black w-[25%]'
+              onChange={handleBuffDurationChange}
             />
           </div>
           <button 

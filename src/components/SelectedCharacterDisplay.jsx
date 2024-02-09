@@ -1,11 +1,10 @@
 import CharacterPortrait from "./CharacterPortrait";
 import CharacterSelectPanel from "./CharacterSelectPanel";
-import characters from '../data/characters_releasedate.json';
 import elements from '../data/elements.json';
 import paths from '../data/paths.json';
 import { useState, useEffect } from 'react';
 
-const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick, changeCharSelectDisplay }) => {
+const SelectedCharacters = ({ characters, characterList, setCharacterList, onPortraitClick, changeCharSelectDisplay }) => {
   const [showSelect, setShowSelect] = useState(false);
   const [activeElements, setActiveElements] = useState(elements.map(element => element['Element']));
   const [activePaths, setActivePaths] = useState(paths.map(path => path['Path']));
@@ -20,7 +19,7 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick, 
     setShowSelect(!showSelect);
   }
 
-  const resetBaseSpeeds = () => {
+  const resetSpeeds = () => {
     const newCharacterList = characterList.map(char => {
       return characters.find(character => character['Character Name'] === char['Character Name']);
     });
@@ -100,7 +99,7 @@ const SelectedCharacters = ({ characterList, setCharacterList, onPortraitClick, 
       </div>
       }
       <div className='ml-5 mb-5 text-white'>
-        <button className='p-5 bg-slate-700 rounded-2xl' onClick={resetBaseSpeeds}>Reset Base Speeds</button>
+        <button className='p-5 bg-slate-700 rounded-2xl' onClick={resetSpeeds}>Reset Speeds</button>
         <button className='p-5 bg-slate-700 rounded-2xl ml-5' onClick={resetSelectedCharacters}>Reset Selected Characters</button>
       </div>
       {
