@@ -187,7 +187,7 @@ const ActionStack = ({ characterList, simStarted=false }) => {
         <div className='bg-zinc-800 m-5 p-8'> { /* displaying results */ }
           <h2 className='text-2xl font-semibold text-white'>Action History</h2>
           {Object.entries(actionGroups).map(([groupNumber, actions]) => (
-            <div key={groupNumber} className='bg-neutral-600 text-white p-3 my-5'>
+            <div key={groupNumber} className='bg-neutral-600 text-white p-3 my-5 inline-block'>
               <h3 className='text-lg font-semibold'><span className='font-bold text-blue-200'>Cycle {groupNumber}:</span> {groupNumber == 0 ? 0 : firstGroupSize + subsequentGroupSize*(groupNumber-1)} to {firstGroupSize + subsequentGroupSize*groupNumber} AV</h3>
               {actions.map((action, index) => (
                 <div key={`${action['name']} ${index}`}>
