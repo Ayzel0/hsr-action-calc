@@ -123,8 +123,8 @@ const ActionStack = ({ characterList, simStarted=false }) => {
   return (
     <div>
       {!simStarted && <h1 className='text-4xl font-semibold text-white px-5 pt-5'>Action Stack</h1>}
-      <div className='grid grid-cols-2'>
-        <div className='bg-inherit'> { /* simulating */ }
+      <div className={`grid ${simStarted && 'grid-cols-3'}`}>
+        <div className={`bg-inherit ${simStarted && 'col-span-2'} relative`}> { /* simulating */ }
           <div className='bg-zinc-800 m-5 p-8'>
             <h2 className='text-2xl font-semibold text-white'>Actions</h2>
             <div className='flex flex-row'>
@@ -166,7 +166,7 @@ const ActionStack = ({ characterList, simStarted=false }) => {
               >Reset Actions</button>
               </div>
               {simStarted &&
-              <div>
+              <div className='absolute right-[3vw]'>
                 {currentActionState === 'advancing' ?
                 <button 
                   className='text-white p-4 ml-8 rounded-xl bg-emerald-600 hover:bg-emerald-800'
