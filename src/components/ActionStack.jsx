@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import ActionValueIcon from './ActionValueIcon';
 import spdIcon from '../../src/assets/spd_icon.png';
 
-const ActionStack = ({ characterList, simStarted=false }) => {
+const ActionStack = ({ characterList, summonsList, simStarted=false }) => {
   const [actionValueList, setActionValueList] = useState([]);
   const [currentActionState, setCurrentActionState] = useState('advancing');
   const [avElapsed, setAVElapsed] = useState(0);
@@ -12,31 +12,77 @@ const ActionStack = ({ characterList, simStarted=false }) => {
   const [subsequentGroupSize, setSubsequentGroupSize] = useState(100);
 
   useEffect(() => {
-    const newActionValueList = characterList.map(char => ({
-      'name': char['Character Name'],
-      'baseSpd': parseInt(char['Base Speed']),
-      'unbuffedSpd': parseInt(char['Speed']),
-      'buffedSpd': parseInt(char['Speed']),
-      'spdBuffDuration': 0,
-      'currentAV': 10000 / char['Speed'],
-      'turnCounter': 0,
-      'icon': char['Image Path']
-    })).sort((a, b) => a['currentAV'] - b['currentAV']);
-    setActionValueList(newActionValueList);
+    if (summonsList.length > 0) {
+      const newActionValueList = [...characterList.map(char => ({
+        'name': char['Character Name'],
+        'baseSpd': parseInt(char['Base Speed']),
+        'unbuffedSpd': parseInt(char['Speed']),
+        'buffedSpd': parseInt(char['Speed']),
+        'spdBuffDuration': 0,
+        'currentAV': 10000 / char['Speed'],
+        'turnCounter': 0,
+        'icon': char['Image Path']
+      })), ...summonsList.map(summon => ({
+        'name': summon['summonName'],
+        'baseSpd': parseInt(summon['summonSpeed']),
+        'unbuffedSpd': parseInt(summon['summonSpeed']),
+        'buffedSpd': parseInt(summon['summonSpeed']),
+        'spdBuffDuration': 0,
+        'currentAV': 10000 / summon['summonSpeed'],
+        'turnCounter': 0,
+        'icon': summon['summonIconPath']
+      }))].sort((a, b) => a['currentAV'] - b['currentAV']);
+      setActionValueList(newActionValueList);
+    } else {
+      const newActionValueList = characterList.map(char => ({
+        'name': char['Character Name'],
+        'baseSpd': parseInt(char['Base Speed']),
+        'unbuffedSpd': parseInt(char['Speed']),
+        'buffedSpd': parseInt(char['Speed']),
+        'spdBuffDuration': 0,
+        'currentAV': 10000 / char['Speed'],
+        'turnCounter': 0,
+        'icon': char['Image Path']
+      })).sort((a, b) => a['currentAV'] - b['currentAV']);
+      setActionValueList(newActionValueList);
+    }
   }, [characterList]);
 
   const resetActionValueList = () => {
-    const newActionValueList = characterList.map(char => ({
-      'name': char['Character Name'],
-      'baseSpd': parseInt(char['Base Speed']),
-      'unbuffedSpd': parseInt(char['Speed']),
-      'buffedSpd': parseInt(char['Speed']), // as a note, buffedSpd == unbuffedSpd without speed buffs
-      'spdBuffDuration': 0,
-      'currentAV': 10000 / char['Speed'],
-      'turnCounter': 0,
-      'icon': char['Image Path']
-    })).sort((a, b) => a['currentAV'] - b['currentAV']);
-    setActionValueList(newActionValueList);
+    if (summonsList.length > 0) {
+      const newActionValueList = [...characterList.map(char => ({
+        'name': char['Character Name'],
+        'baseSpd': parseInt(char['Base Speed']),
+        'unbuffedSpd': parseInt(char['Speed']),
+        'buffedSpd': parseInt(char['Speed']),
+        'spdBuffDuration': 0,
+        'currentAV': 10000 / char['Speed'],
+        'turnCounter': 0,
+        'icon': char['Image Path']
+      })), ...summonsList.map(summon => ({
+        'name': summon['summonName'],
+        'baseSpd': parseInt(summon['summonSpeed']),
+        'unbuffedSpd': parseInt(summon['summonSpeed']),
+        'buffedSpd': parseInt(summon['summonSpeed']),
+        'spdBuffDuration': 0,
+        'currentAV': 10000 / summon['summonSpeed'],
+        'turnCounter': 0,
+        'icon': summon['summonIconPath']
+      }))].sort((a, b) => a['currentAV'] - b['currentAV']);
+      setActionValueList(newActionValueList);
+    } else {
+      const newActionValueList = characterList.map(char => ({
+        'name': char['Character Name'],
+        'baseSpd': parseInt(char['Base Speed']),
+        'unbuffedSpd': parseInt(char['Speed']),
+        'buffedSpd': parseInt(char['Speed']),
+        'spdBuffDuration': 0,
+        'currentAV': 10000 / char['Speed'],
+        'turnCounter': 0,
+        'icon': char['Image Path']
+      })).sort((a, b) => a['currentAV'] - b['currentAV']);
+      setActionValueList(newActionValueList);
+    }
     setAVElapsed(0);
     setCurrentActionState('advancing');
     setActionHistory([]);
@@ -120,6 +166,9 @@ const ActionStack = ({ characterList, simStarted=false }) => {
     setActionGroups(groupActions(actionHistory));
   }, [actionHistory]);
 
+  // for index counting across groups
+  let overallIndex = 0;
+
   return (
     <div>
       {!simStarted && <h1 className='text-4xl font-semibold text-white px-5 pt-5'>Action Stack</h1>}
@@ -166,7 +215,7 @@ const ActionStack = ({ characterList, simStarted=false }) => {
               >Reset Actions</button>
               </div>
               {simStarted &&
-              <div className='absolute right-[3vw]'>
+              <div className='absolute right-[20px]'>
                 {currentActionState === 'advancing' ?
                 <button 
                   className='text-white p-4 ml-8 rounded-xl bg-emerald-600 hover:bg-emerald-800'
@@ -187,20 +236,24 @@ const ActionStack = ({ characterList, simStarted=false }) => {
         <div className='bg-zinc-800 m-5 p-8'> { /* displaying results */ }
           <h2 className='text-2xl font-semibold text-white'>Action History</h2>
           {Object.entries(actionGroups).map(([groupNumber, actions]) => (
-            <div key={groupNumber} className='bg-neutral-600 text-white p-3 my-5 inline-block'>
+            <div key={groupNumber} className='bg-neutral-600 text-white p-3 my-5'>
               <h3 className='text-lg font-semibold'><span className='font-bold text-blue-200'>Cycle {groupNumber}:</span> {groupNumber == 0 ? 0 : firstGroupSize + subsequentGroupSize*(groupNumber-1)} to {firstGroupSize + subsequentGroupSize*groupNumber} AV</h3>
-              {actions.map((action, index) => (
-                <div key={`${action['name']} ${index}`}>
-                  <ActionValueIcon 
-                    displayOnly={true}
-                    avListObj={action}
-                    actionValueList={actionValueList}
-                    setActionValueList={setActionValueList}
-                    actionIndex={index}
-                    simStarted={simStarted}
-                  />
-                </div>
-              ))}
+              {actions.map((action) => {
+                const component = (
+                  <div key={`${action['name']} ${overallIndex}`}>
+                    <ActionValueIcon 
+                      displayOnly={true}
+                      avListObj={action}
+                      actionValueList={actionValueList}
+                      setActionValueList={setActionValueList}
+                      actionIndex={overallIndex}
+                      simStarted={simStarted}
+                    />
+                  </div>
+                );
+                overallIndex++;
+                return component;
+              })}
             </div>
           ))}
         </div>

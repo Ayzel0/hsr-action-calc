@@ -17,7 +17,8 @@ const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList })
 
     // new speed value
     const baseSpd = avListObj['baseSpd'];
-    const newSpd = baseSpd * (1+(speedPercentChange/100)) + speedFlatChange;
+    const spdBuff = baseSpd * (speedPercentChange/100);
+    const newSpd = avListObj['unbuffedSpd'] + spdBuff + speedFlatChange;
     
     // speed buffed/debuffed av - updating speed effect on AV first then direct AV change
     let newAV = (av * speed/newSpd);
@@ -83,6 +84,7 @@ const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList })
     <div className='grid grid-cols-2 bg-emerald-800 rounded-2xl'>
       <div className='py-2 px-5 text-white'>
         <h1 className='text-xl font-bold'>Action Information</h1>
+        <p className='text-white mt-4'><span className='font-semibold'>Current Speed:</span> {avListObj['buffedSpd']}</p>
       </div>
       <div className='py-2 px-5 text-white w-[300px]'>
         <h1 className='text-xl font-bold'>Action/Speed Change</h1>

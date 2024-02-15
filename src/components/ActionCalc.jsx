@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import SelectedCharacters from './SelectedCharacterDisplay';
 import ActionStack from './ActionStack';
 import characters_raw from '../data/characters_releasedate.json';
+import summons_raw from '../data/summons.json';
 
 const ActionCalc = () => {
   const [characters, setCharacters] = useState(characters_raw);
+  const [summonsList, setSummonsList] = useState([]);
   const [characterList, setCharacterList] = useState([]);
   const [simStarted, setSimStarted] = useState(false);
 
@@ -27,10 +29,14 @@ const ActionCalc = () => {
 
     if (characterList.length < 4 && !charListNames.includes(charName)) {
       setCharacterList([...characterList, characters.find(character => character['Character Name'] === charName)]);
+      if (summons_raw.find(summon => summon['summonerChar'] === charName)) {
+        setSummonsList([...summonsList, summons_raw.find(summon => summon['summonerChar'] === charName)]);
+      }
     }
 
     if (charListNames.includes(charName)) {
       setCharacterList(characterList.filter(character => character['Character Name'] !== charName));
+      setSummonsList(summonsList.filter(summon => summon['summonerChar'] !== charName));
     }
   }
   
@@ -53,6 +59,7 @@ const ActionCalc = () => {
           >&gt;</button>
           <ActionStack 
             characterList={characterList}
+            summonsList={summonsList}
             simStarted={simStarted}
           />
         </div>

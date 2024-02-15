@@ -1,0 +1,16 @@
+[
+    {
+        "summonName": "Lightning Lord",
+        "summonSpeed": 60,
+        "summonEnergyGen": 0,
+        "summonerChar": "Jing Yuan",
+        "summonIconPath": "summon_icons/Lightning Lord.png"
+    },
+    {
+        "summonName": "Numby",
+        "summonSpeed": 80,
+        "summonEnergyGen": 0,
+        "summonerChar": "Topaz & Numby",
+        "summonIconPath": "summon_icons/Numby.png"
+    }
+]
