@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ActionValueIcon from './ActionValueIcon';
-import spdIcon from '../../public/misc_icons/spd_icon.png';
+import spdIcon from '../../src/assets/spd_icon.png';
 
 const ActionStack = ({ characterList, simStarted=false }) => {
   const [actionValueList, setActionValueList] = useState([]);
