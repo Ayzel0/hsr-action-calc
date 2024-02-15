@@ -80,66 +80,72 @@ const ActionIconHoverMenu = ({ avListObj, actionValueList, setActionValueList })
   }
 
   return (
-    <div className='bg-emerald-800 py-2 px-5 rounded-2xl text-white w-[300px]'>
-      <h1 className='text-xl font-bold'>Action/Speed Change</h1>
-      <div>
-        <h2 className='text-lg mt-4 font-semibold'>Action Advance</h2>
-        <form 
-          className='flex flex-col my-2'
-          onSubmit={handleSubmit}
-        >
-          <div className='flex flex-row'>
-            <p>% Change</p>
-            <input 
-              type='number'
-              name='avPercentChange'
-              className='absolute right-2 text-black'
-              onChange={handleAVChange}
-            />
-          </div>
-          <div className='flex flex-row mt-2'>
-            <p>AV Change</p>
-            <input 
-              type='number'
-              name='avFlatChange'
-              className='absolute right-2 text-black'
-              onChange={handleAVChange}
-            />
-          </div>
-          <h2 className='text-lg mt-4 font-semibold'>Speed Change</h2>
-          <div className='flex flex-row mt-2'>
-            <p>% Change</p>
-            <input 
-              type='number'
-              name='speedPercentChange'
-              className='absolute right-2 text-black'
-              onChange={handleSpeedChange}
-            />
-          </div>
-          <div className='flex flex-row mt-2'>
-            <p>Flat Change</p>
-            <input 
-              type='number'
-              name='speedFlatChange'
-              className='absolute right-2 text-black'
-              onChange={handleSpeedChange}
-            />
-          </div>
-          <div className='flex flex-row mt-2'>
-            <p>Buff Duration</p>
-            <input 
-              min={0}
-              type='number'
-              name='speedBuffDuration'
-              className='absolute right-2 text-black w-[25%]'
-              onChange={handleBuffDurationChange}
-            />
-          </div>
-          <button 
-            type='submit'
-            className='bg-indigo-950 rounded-xl p-2 mt-4'
-          >Update</button>
-        </form>
+    <div className='grid grid-cols-2 bg-emerald-800 rounded-2xl'>
+      <div className='py-2 px-5 text-white'>
+        <h1 className='text-xl font-bold'>Action Information</h1>
+      </div>
+      <div className='py-2 px-5 text-white w-[300px]'>
+        <h1 className='text-xl font-bold'>Action/Speed Change</h1>
+        <div>
+          <h2 className='text-lg mt-4 font-semibold'>Action Advance</h2>
+          <form 
+            className='flex flex-col my-2'
+            onSubmit={handleSubmit}
+          >
+            <div className='flex flex-row'>
+              <p>% Change</p>
+              <input 
+                type='number'
+                name='avPercentChange'
+                className='absolute right-2 text-black w-[20%]'
+                onChange={handleAVChange}
+              />
+            </div>
+            <div className='flex flex-row mt-2'>
+              <p>AV Change</p>
+              <input 
+                type='number'
+                name='avFlatChange'
+                className='absolute right-2 text-black w-[20%]'
+                onChange={handleAVChange}
+              />
+            </div>
+            <h2 className='text-lg mt-4 font-semibold'>Speed Change</h2>
+            <div className='flex flex-row mt-2'>
+              <p>% Change</p>
+              <input 
+                type='number'
+                name='speedPercentChange'
+                className='absolute right-2 text-black w-[20%]'
+                onChange={handleSpeedChange}
+              />
+            </div>
+            <div className='flex flex-row mt-2'>
+              <p>Flat Change</p>
+              <input 
+                type='number'
+                name='speedFlatChange'
+                className='absolute right-2 text-black w-[20%]'
+                onChange={handleSpeedChange}
+              />
+            </div>
+            <div className='flex flex-row mt-2'>
+              <p>Buff Duration</p>
+              <input 
+                min={0}
+                type='number'
+                name='speedBuffDuration'
+                className='absolute right-2 text-black w-[13%]'
+                value={buffDurationChange}
+                onChange={handleBuffDurationChange}
+              />
+            </div>
+            <button 
+              type='submit'
+              className='bg-indigo-950 rounded-xl p-2 mt-4'
+            >Update</button>
+          </form>
+        </div>
       </div>
     </div>
   );

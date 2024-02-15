@@ -127,7 +127,7 @@ const ActionStack = ({ characterList, simStarted=false }) => {
         <div className='bg-inherit'> { /* simulating */ }
           <div className='bg-zinc-800 m-5 p-8'>
             <h2 className='text-2xl font-semibold text-white'>Actions</h2>
-            <div className='flex flex-row'>
+            <div className='flex flex-row relative'>
               <div className='flex flex-col'> { /* icon list */ }
                 {actionValueList.map((action, index) => (
                 <div 
@@ -142,11 +142,11 @@ const ActionStack = ({ characterList, simStarted=false }) => {
                     actionIndex={index}
                     simStarted={simStarted}
                   />
+                  {action['spdBuffDuration'] > 0 &&
                   <div
-                    className='w-[8vw] ml-5'
-                  > { /* section for buffs */ }
-                    {action['spdBuffDuration'] > 0 &&
-                    <div className='flex flex-row ml-0 relative'> { /* speed buffs  */ }
+                    className='w-[8vw] ml-5 absolute right-[15vw]'
+                  >
+                    <div className='flex flex-row relative'> { /* speed buffs  */ }
                       <img 
                         src={spdIcon}
                         className='w-[3vw]'
@@ -156,8 +156,8 @@ const ActionStack = ({ characterList, simStarted=false }) => {
                         <p className='text-white'><span className='font-semibold text-emerald-200'>{action['spdBuffDuration']}</span> turns left</p>
                       </div>
                     </div>
-                    }
                   </div>
+                  }
                 </div>
               ))}
               <button
@@ -166,7 +166,7 @@ const ActionStack = ({ characterList, simStarted=false }) => {
               >Reset Actions</button>
               </div>
               {simStarted &&
-              <div>
+              <div className='absolute right-3'>
                 {currentActionState === 'advancing' ?
                 <button 
                   className='text-white p-4 ml-8 rounded-xl bg-emerald-600 hover:bg-emerald-800'
